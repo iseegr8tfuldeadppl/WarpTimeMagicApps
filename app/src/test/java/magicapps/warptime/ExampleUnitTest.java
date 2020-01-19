@@ -1,4 +1,4 @@
-package magics.timechange;
+package magicapps.warptime;
 
 import org.junit.Test;
 

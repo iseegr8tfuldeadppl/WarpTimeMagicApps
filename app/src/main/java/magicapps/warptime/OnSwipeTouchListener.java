@@ -1,4 +1,4 @@
-package magics.timechange;
+package magicapps.warptime;
 
 import android.content.Context;
 import android.view.GestureDetector;
