@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        reload();
+
         update_time();
 
         running = true;
@@ -116,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
 
         save_current_brightness();
 
-        reload();
 
         lower_brightness();
     }
@@ -173,8 +174,17 @@ public class MainActivity extends AppCompatActivity {
         String dayofmonth = day[2];
         displayedminutes = minutes;
         displayedhours = hours;
-        hoursdisplay.setText(String.valueOf(hours));
-        minutesdisplay.setText(String.valueOf(minutes));
+
+        if(displayedminutes<10)
+            minutesdisplay.setText("0" + String.valueOf(displayedminutes));
+        else
+            minutesdisplay.setText(String.valueOf(displayedminutes));
+
+        if(hours==0)
+            hoursdisplay.setText("0" + String.valueOf(displayedhours));
+        else
+            hoursdisplay.setText(String.valueOf(displayedhours));
+
         todayfullstring = today + ", " + month + " " + dayofmonth;
         date.setText(todayfullstring);
     }
