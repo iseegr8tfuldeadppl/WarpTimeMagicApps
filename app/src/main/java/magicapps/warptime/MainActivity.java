@@ -76,7 +76,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        setBrightness(curBrightnessValue);
+        if(curBrightnessValue==0)
+            setBrightness(255);
+        else
+            setBrightness(curBrightnessValue);
 
         running = false;
 
@@ -90,7 +93,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        setBrightness(curBrightnessValue);
+        if(curBrightnessValue==0)
+            setBrightness(255);
+        else
+            setBrightness(curBrightnessValue);
     }
 
     private void setBrightness(int level) {
