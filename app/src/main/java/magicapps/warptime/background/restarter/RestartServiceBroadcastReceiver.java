@@ -40,13 +40,13 @@ public class RestartServiceBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             scheduleJob(context);
         } else {
             registerRestarterReceiver(context);
             ProcessMainClass bck = new ProcessMainClass();
             bck.launchService(context);
-        }
+        }*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -73,7 +73,7 @@ public class RestartServiceBroadcastReceiver extends BroadcastReceiver {
     }
 
 
-    private void registerRestarterReceiver(final Context context) {
+    /*private void registerRestarterReceiver(final Context context) {
 
         // the context can be null if app just installed and this is called from restartsensorservice
         // https://stackoverflow.com/questions/24934260/intentreceiver-components-are-not-allowed-to-register-to-receive-intents-when
@@ -106,6 +106,6 @@ public class RestartServiceBroadcastReceiver extends BroadcastReceiver {
             }
         }, 1000);
 
-    }
+    }*/
 
 }

@@ -3,8 +3,6 @@
     package="magicapps.warptime">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
 
     <application
         android:allowBackup="true"
@@ -13,9 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="magicapps.warptime.MainActivity"
+        <activity android:name=".MainActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".Tutorial"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,10 +25,11 @@
             </intent-filter>
         </activity>
 
-        <service android:name="magicapps.warptime.background.restarter.JobService"
+        <service
+            android:name=".background.restarter.JobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <receiver
+        <!--
+<receiver
             android:name="magicapps.warptime.background.restarter.RestartServiceBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
@@ -37,15 +40,13 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
-
+        -->
         <service
-            android:name="magicapps.warptime.background.Service"
+            android:name=".background.Service"
             android:clearTaskOnLaunch="true"
             android:enabled="true"
             android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            />
-
+            android:launchMode="singleInstance" />
     </application>
 
 </manifest>

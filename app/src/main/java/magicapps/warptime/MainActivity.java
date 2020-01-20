@@ -8,6 +8,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -19,11 +20,15 @@ import android.os.Vibrator;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import magicapps.warptime.SQLite.SQL;
+import magicapps.warptime.SQLite.SQLSharing;
 import magicapps.warptime.background.ProcessMainClass;
 import magicapps.warptime.background.restarter.RestartServiceBroadcastReceiver;
 
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean doubletapmode = false;
     private int counter = 0, doubletapcounter = -1;
     private String displayeddatefullstring = "";
-    private boolean first = true, second = true, third = true;
+    private boolean first = true, second = true;
     private int hours=12, minutes=30, displayedhours, displayedminutes;
     private boolean pm = false;
     private int curBrightnessValue = 255;
@@ -44,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private String displayedday = "", displayedmonth = "", displayeddayofmonth = "";
     private Thread mythread, mythread2;
     private int CODE_WRITE_SETTINGS_PERMISSION = 1338;
+    private boolean tutorial = false;
+    private TextView reload,confirm,addone,addtwo,addthree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,31 @@ public class MainActivity extends AppCompatActivity {
         date.setTypeface(coolfont2);
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        sql();
+        SQLSharing.mycursor.moveToFirst();
+        if(SQLSharing.mycursor.getString(1).equals("no"))
+            tutorial = true;
+        close_sql();
+
+
+        if(tutorial){
+            addthree = findViewById(R.id.addthree);
+            addtwo = findViewById(R.id.addtwo);
+            addone = findViewById(R.id.addone);
+            confirm = findViewById(R.id.confirm);
+            reload = findViewById(R.id.reload);
+            Resources resources = getResources();
+            addone.setBackground(resources.getDrawable(R.drawable.addone));
+            addtwo.setBackground(resources.getDrawable(R.drawable.addtwo));
+            addthree.setBackground(resources.getDrawable(R.drawable.addthree));
+            confirm.setBackground(resources.getDrawable(R.drawable.confirm));
+            addone.setText("Add 1" + '\n' + "minute");
+            addtwo.setText("Add 2" + '\n' + "minutes");
+            addthree.setText("Add 3" + '\n' + "minutes");
+            confirm.setText("Confirm" + '\n' + "Number");
+            reload.setText("Reset");
+        }
+
         // background service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             RestartServiceBroadcastReceiver.scheduleJob(getApplicationContext());
@@ -71,6 +103,22 @@ public class MainActivity extends AppCompatActivity {
             ProcessMainClass bck = new ProcessMainClass();
             bck.launchService(getApplicationContext());
         }
+    }
+
+    private void sql() {
+        if(SQLSharing.mycursor!=null)
+            SQLSharing.mycursor.close();
+        if(SQLSharing.mydb!=null)
+            SQLSharing.mydb.close();
+        SQLSharing.mydb = new SQL(this);
+        SQLSharing.mycursor = SQLSharing.mydb.getAllDate();
+    }
+
+    private void close_sql() {
+        if(SQLSharing.mycursor!=null)
+            SQLSharing.mycursor.close();
+        if(SQLSharing.mydb!=null)
+            SQLSharing.mydb.close();
     }
 
     @Override
@@ -100,14 +148,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setBrightness(int level) {
-        android.provider.Settings.System.putInt(getContentResolver(),
-                android.provider.Settings.System.SCREEN_BRIGHTNESS,
-                level);
+        if(!tutorial) {
+            android.provider.Settings.System.putInt(getContentResolver(),
+                    android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                    level);
+        }
     }
 
+    private boolean dontvibrateforonce = true;
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(dontvibrateforonce)
+            dontvibrateforonce = false;
+        else
+            doublevibrate();
 
         reload();
 
@@ -118,8 +174,32 @@ public class MainActivity extends AppCompatActivity {
 
         save_current_brightness();
 
-
         lower_brightness();
+    }
+
+    private void doublevibrate() {
+
+        vibrate(300);
+        Runnable r=new Runnable() {
+            @Override
+            public void run() {
+                long futuretime = System.currentTimeMillis() + 500;
+
+                while (System.currentTimeMillis() < futuretime){
+                    synchronized (this){
+                        try{
+                            wait(futuretime - System.currentTimeMillis());
+                        } catch( Exception ignored){}
+                    }
+                }
+
+                vibrator.sendEmptyMessage(0);
+            }
+        };
+
+        Thread getMythread3 = new Thread(r);
+        getMythread3.start();
+
     }
 
     private void lower_brightness() {
@@ -149,10 +229,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void reload() {
         hideNavigationBar();
+        setBrightness(0);
+
+        if(tutorial) {
+            addone.setText("Add 1" + '\n' + "minute");
+            addtwo.setText("Add 2" + '\n' + "minutes");
+            addthree.setText("Add 3" + '\n' + "minutes");
+            confirm.setText("Confirm" + '\n' + "Number");
+            reload.setText("Reset");
+        }
+
         magicbeingdone = false;
         first = true;
         second = true;
-        third = true;
         blackscreen.setVisibility(View.VISIBLE);
         doubletapmode = false;
         counter = 0;
@@ -229,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        reload();
     }
 
     private void hideNavigationBar() {
@@ -260,6 +350,10 @@ public class MainActivity extends AppCompatActivity {
         else {
             vibrate(shortvibrate);
             counter += 1;
+            if(tutorial) {
+                if(counter<=10)
+                    print("Clock is now " + String.valueOf(counter) + " minutes ahead");
+            }
             /*display.setText(String.valueOf(counter));*/
             limitcounter();
         }
@@ -269,6 +363,9 @@ public class MainActivity extends AppCompatActivity {
         if(counter>10){
             vibrate(longvibrate*5);
             counter = 0;
+            if(tutorial) {
+                print2("You have passed 10 minutes! clock has been reset to current time");
+            }
             /*display.setText(String.valueOf(counter));*/
         }
     }
@@ -279,6 +376,10 @@ public class MainActivity extends AppCompatActivity {
         else {
             vibrate(shortvibrate);
             counter += 2;
+            if(tutorial) {
+                if(counter<=10)
+                    print("Clock is now " + String.valueOf(counter) + " minutes ahead");
+            }
             /*display.setText(String.valueOf(counter));*/
             limitcounter();
         }
@@ -290,6 +391,10 @@ public class MainActivity extends AppCompatActivity {
         else {
             vibrate(shortvibrate);
             counter += 3;
+            if(tutorial) {
+                if(counter<=10)
+                    print("Clock is now " + String.valueOf(counter) + " minutes ahead");
+            }
             /*display.setText(String.valueOf(counter));*/
             limitcounter();
         }
@@ -299,6 +404,13 @@ public class MainActivity extends AppCompatActivity {
 
         if(!doubletapmode){ doubletapmode = true;
             vibrate(longvibrate);
+            if(tutorial){
+                addone.setText("Double tap" + '\n' + "anywhere");
+                reload.setText("Don't double tap here!");
+                addtwo.setText("Double tap anywhere");
+                addthree.setText("Double tap" + '\n' + "anywhere");
+                confirm.setText("Double tap" + '\n' + "anywhere");
+            }
         }
         exiter();
 
@@ -306,6 +418,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void reloadClicked(View view) {
         reload();
+        if(tutorial){
+            print("Clock has been reset to current time");
+        }
         vibrate(longvibrate);
     }
 
@@ -323,7 +438,10 @@ public class MainActivity extends AppCompatActivity {
             displayfaketime();
             doubletapcounter = 0;
             doubletapmode = false;
-            setBrightness(curBrightnessValue);
+            if(curBrightnessValue==0)
+                setBrightness(255);
+            else
+                setBrightness(curBrightnessValue);
             blackscreen.setVisibility(View.GONE);
             starttheshit();
         }
@@ -380,10 +498,23 @@ public class MainActivity extends AppCompatActivity {
             the_good_work();
         }
     };
+    private Handler vibrator = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            vibrate(300);
+        }
+    };
 
+    private boolean oncelol = true;
     private Handler updatetimehandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
+            if(tutorial){
+                if(oncelol)
+                    oncelol = false;
+                else
+                    print2("Time is into a new minute! it is advised to do the trick early in a new minute like now!");
+            }
             update_time();
         }
     };
@@ -392,16 +523,12 @@ public class MainActivity extends AppCompatActivity {
     private void dramatic_effect() {
         if(first){
             first = false;
-            delayer = 10;
+            delayer = 200;
         } else if(second){
             second = false;
-            delayer = 1690;
-        } else if(third) {
-            third = false;
-            delayer = 1100;
-        } else {
-            delayer = 690;
-        }
+            delayer = 850;
+        } else
+            delayer = 630;
     }
 
     private void the_good_work() {
@@ -450,6 +577,10 @@ public class MainActivity extends AppCompatActivity {
             starttheshit();
         } else {
             magicbeingdone = false;
+            if(tutorial) {
+                print("Done!");
+                print("Press back or home button to reset the trick!");
+            }
             counter = 0;
         }
     }
@@ -460,6 +591,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void print(Object lol){
         Toast.makeText(getApplicationContext(), String.valueOf(lol), Toast.LENGTH_SHORT).show();
+    }
+    private void print2(Object lol){
+        Toast.makeText(getApplicationContext(), String.valueOf(lol), Toast.LENGTH_LONG).show();
     }
 
     private int get_month(String month){

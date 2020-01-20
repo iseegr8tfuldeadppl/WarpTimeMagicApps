@@ -24,14 +24,14 @@ public class JobService extends android.app.job.JobService {
     public boolean onStartJob(JobParameters jobParameters) {
         ProcessMainClass bck = new ProcessMainClass();
         bck.launchService(this);
-        registerRestarterReceiver();
+        /*registerRestarterReceiver();*/
         instance = this;
         JobService.jobParameters = jobParameters;
 
         return false;
     }
 
-    private void registerRestarterReceiver() {
+    /*private void registerRestarterReceiver() {
 
         // the context can be null if app just installed and this is called from restartsensorservice
         // https://stackoverflow.com/questions/24934260/intentreceiver-components-are-not-allowed-to-register-to-receive-intents-when
@@ -64,11 +64,11 @@ public class JobService extends android.app.job.JobService {
             }
         }, 1000);
 
-    }
+    }*/
 
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
-        Intent broadcastIntent = new Intent(Globals.RESTART_INTENT);
+        /*Intent broadcastIntent = new Intent(Globals.RESTART_INTENT);
         sendBroadcast(broadcastIntent);
         // give the time to run
         new Handler().postDelayed(new Runnable() {
@@ -77,7 +77,7 @@ public class JobService extends android.app.job.JobService {
                 unregisterReceiver(restartSensorServiceReceiver);
             }
         }, 1000);
-
+*/
         return false;
     }
 
