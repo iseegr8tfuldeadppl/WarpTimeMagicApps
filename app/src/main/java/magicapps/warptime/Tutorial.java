@@ -3,8 +3,11 @@ package magicapps.warptime;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import magicapps.warptime.SQLite.SQL;
 import magicapps.warptime.SQLite.SQLSharing;
@@ -15,6 +18,55 @@ public class Tutorial extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
+
+        TextView title = findViewById(R.id.title);
+        Typeface font = Typeface.createFromAsset(getAssets(), "Tajawal-Light.ttf");
+        Typeface font2 = Typeface.createFromAsset(getAssets(), "Tajawal-Medium.ttf");
+        title.setTypeface(font);
+        TextView ft = findViewById(R.id.firsttitle);
+        TextView fs = findViewById(R.id.firstsub);
+        TextView st = findViewById(R.id.secondtitle);
+        TextView ss = findViewById(R.id.secondsub);
+        TextView tt = findViewById(R.id.thirdtitle);
+        TextView ts = findViewById(R.id.thirdsub);
+        TextView ftt = findViewById(R.id.fourthtitle);
+        TextView fts = findViewById(R.id.fourthsub);
+        TextView fvt = findViewById(R.id.fifthtitle);
+        TextView fvs = findViewById(R.id.fifthsub);
+        TextView sxt = findViewById(R.id.sixthtitle);
+        TextView sxs = findViewById(R.id.sixthsub);
+        TextView svt = findViewById(R.id.seventhtitle);
+        TextView svs = findViewById(R.id.seventhsub);
+        TextView et = findViewById(R.id.eighthtitle);
+        TextView es = findViewById(R.id.eighthsub);
+        TextView nt = findViewById(R.id.ninetitle);
+        TextView ns = findViewById(R.id.ninesub);
+        TextView tnt = findViewById(R.id.tentitle);
+        TextView tns = findViewById(R.id.tensub);
+        Button yes = findViewById(R.id.yes);
+        Button no = findViewById(R.id.no);
+        ft.setTypeface(font2);
+        fs.setTypeface(font2);
+        st.setTypeface(font2);
+        ss.setTypeface(font2);
+        tt.setTypeface(font2);
+        ts.setTypeface(font2);
+        ftt.setTypeface(font2);
+        fts.setTypeface(font2);
+        fvt.setTypeface(font2);
+        fvs.setTypeface(font2);
+        sxt.setTypeface(font2);
+        sxs.setTypeface(font2);
+        svt.setTypeface(font2);
+        svs.setTypeface(font2);
+        et.setTypeface(font2);
+        es.setTypeface(font2);
+        nt.setTypeface(font2);
+        ns.setTypeface(font2);
+        tnt.setTypeface(font2);
+        tns.setTypeface(font2);
+        yes.setTypeface(font2);
+        no.setTypeface(font2);
 
         sql();
         if(SQLSharing.mycursor.getCount()<=0){

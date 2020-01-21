@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="betweentitleandtext">5dp</dimen>
+    <dimen name="betweentitleandtext">1dp</dimen>
     <dimen name="titlesize">21sp</dimen>
     <dimen name="tutorialtextsize">20sp</dimen>
+    <dimen name="sides">30dp</dimen>
+    <dimen name="sidesofparagraphs">15dp</dimen>
+    <dimen name="betweenthistextandthenexttiel">10dp</dimen>
+    <dimen name="betweenbuttons">18dp</dimen>
+    <dimen name="buttontextsize">20sp</dimen>
+    <dimen name="footer">27dp</dimen>
+    <dimen name="largetitlesize">50sp</dimen>
+    <dimen name="maintitletop">60dp</dimen>
+    <dimen name="maintitlebottom">60dp</dimen>
+    <dimen name="paragraphtextsize">17sp</dimen>
+    <dimen name="text">30sp</dimen>
+    <dimen name="twentydp">20dp</dimen>
+    <dimen name="thirtydp">30dp</dimen>
+    <dimen name="tendp">10dp</dimen>
+    <dimen name="large">120dp</dimen>
+    <dimen name="anothertext">17sp</dimen>
+    <dimen name="twelve">12dp</dimen>
 </resources>

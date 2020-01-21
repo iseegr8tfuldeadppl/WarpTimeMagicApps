@@ -68,8 +68,8 @@ public class Service extends android.app.Service {
     public void restartForeground() {
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {*/
             try {
-                    Notification notification = new Notification();
-                    startForeground(NOTIFICATION_ID, notification.setNotification(this, "pls keep me here", "rawr", R.drawable.ic_launcher_background));
+                    //Notification notification = new Notification();
+                    //startForeground(NOTIFICATION_ID, notification.setNotification(this, "pls keep me here", "rawr", R.drawable.ic_launcher_background));
                     startTimer();
             } catch (Exception ignored) {}
         /*}*/

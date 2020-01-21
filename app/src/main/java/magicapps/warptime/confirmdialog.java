@@ -3,10 +3,13 @@ package magicapps.warptime;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
+
 import magicapps.warptime.SQLite.SQL;
 import magicapps.warptime.SQLite.SQLSharing;
 
@@ -25,8 +28,18 @@ public class confirmdialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.confirmdialog);
 
+        Typeface font2 = Typeface.createFromAsset(c.getAssets(), "Tajawal-Medium.ttf");
         Button yes = findViewById(R.id.yes);
         Button no = findViewById(R.id.no);
+        TextView title = findViewById(R.id.title);
+        TextView text = findViewById(R.id.text);
+        title.setTypeface(font2);
+        text.setTypeface(font2);
+        yes.setTypeface(font2);
+        no.setTypeface(font2);
+        yes.setTypeface(font2);
+        no.setTypeface(font2);
+
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

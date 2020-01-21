@@ -24,20 +24,20 @@ public class JobService extends android.app.job.JobService {
     public boolean onStartJob(JobParameters jobParameters) {
         ProcessMainClass bck = new ProcessMainClass();
         bck.launchService(this);
-        /*registerRestarterReceiver();*/
+        registerRestarterReceiver();
         instance = this;
         JobService.jobParameters = jobParameters;
 
         return false;
     }
 
-    /*private void registerRestarterReceiver() {
+    private void registerRestarterReceiver() {
 
         // the context can be null if app just installed and this is called from restartsensorservice
         // https://stackoverflow.com/questions/24934260/intentreceiver-components-are-not-allowed-to-register-to-receive-intents-when
         // Final decision: in case it is called from installation of new version (i.e. from manifest, the application is
         // null. So we must use context.registerReceiver. Otherwise this will crash and we try with context.getApplicationContext
-        if (restartSensorServiceReceiver == null)
+        /*if (restartSensorServiceReceiver == null)
             restartSensorServiceReceiver = new RestartServiceBroadcastReceiver();
         else try {
             unregisterReceiver(restartSensorServiceReceiver);
@@ -62,9 +62,9 @@ public class JobService extends android.app.job.JobService {
                     }
                 }
             }
-        }, 1000);
+        }, 1000);*/
 
-    }*/
+    }
 
     @Override
     public boolean onStopJob(JobParameters jobParameters) {

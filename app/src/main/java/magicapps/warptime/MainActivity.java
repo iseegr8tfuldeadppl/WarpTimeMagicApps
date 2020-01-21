@@ -19,6 +19,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         minutesdisplay.setTypeface(coolfont);
         twodots.setTypeface(coolfont);
         date.setTypeface(coolfont2);
+
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         sql();
@@ -79,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(tutorial){
+            Typeface font2 = Typeface.createFromAsset(getAssets(), "Tajawal-Medium.ttf");
+            Button doitagain = findViewById(R.id.doitagain);
+            Button backtotutorial = findViewById(R.id.backtotutorial);
+            doitagain.setTypeface(font2);
+            backtotutorial.setTypeface(font2);
             addthree = findViewById(R.id.addthree);
             addtwo = findViewById(R.id.addtwo);
             addone = findViewById(R.id.addone);
@@ -232,6 +239,8 @@ public class MainActivity extends AppCompatActivity {
         setBrightness(0);
 
         if(tutorial) {
+            if(tutorialexit!=null)
+                tutorialexit.setVisibility(View.GONE);
             addone.setText("Add 1" + '\n' + "minute");
             addtwo.setText("Add 2" + '\n' + "minutes");
             addthree.setText("Add 3" + '\n' + "minutes");
@@ -318,7 +327,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        reload();
+        if(tutorial) {
+            if (blackscreen.getVisibility() == View.VISIBLE)
+                backtotutorialpage();
+        } else
+            reload();
+    }
+
+    private void backtotutorialpage() {
+        Intent backtotutorial = new Intent(this, Tutorial.class);
+        startActivity(backtotutorial);
+        finish();
     }
 
     private void hideNavigationBar() {
@@ -513,7 +532,7 @@ public class MainActivity extends AppCompatActivity {
                 if(oncelol)
                     oncelol = false;
                 else
-                    print2("Time is into a new minute! it is advised to do the trick early in a new minute like now!");
+                    print2("Time is into a new minute! it is advised to do the trick now!");
             }
             update_time();
         }
@@ -531,6 +550,7 @@ public class MainActivity extends AppCompatActivity {
             delayer = 630;
     }
 
+    private LinearLayout tutorialexit;
     private void the_good_work() {
         displayedminutes = minutes + counter;
         displayedhours = hours;
@@ -579,7 +599,8 @@ public class MainActivity extends AppCompatActivity {
             magicbeingdone = false;
             if(tutorial) {
                 print("Done!");
-                print("Press back or home button to reset the trick!");
+                tutorialexit = findViewById(R.id.tutorialexit);
+                tutorialexit.setVisibility(View.VISIBLE);
             }
             counter = 0;
         }
@@ -651,4 +672,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void doitagainClicked(View view) {
+        reload();
+        tutorialexit.setVisibility(View.GONE);
+    }
+
+    public void backtotutorialpageClicked(View view) {
+        backtotutorialpage();
+        tutorialexit.setVisibility(View.GONE);
+    }
 }
