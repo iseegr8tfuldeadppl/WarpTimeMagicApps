@@ -3,7 +3,6 @@ package magicapps.warptime;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -21,13 +20,11 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import magicapps.warptime.SQLite.SQL;
 import magicapps.warptime.SQLite.SQLSharing;
 import magicapps.warptime.background.ProcessMainClass;
@@ -38,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout blackscreen;
     private Vibrator v;
     private int shortvibrate = 25, longvibrate= 60;
-    private TextView hoursdisplay, minutesdisplay, twodots, date;
+    private TextView hoursdisplay;
+    private TextView minutesdisplay;
+    private TextView date;
     private boolean doubletapmode = false;
     private int counter = 0, doubletapcounter = -1;
     private String displayeddatefullstring = "";
@@ -48,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private int curBrightnessValue = 255;
     private String todayfullstring = "";
     private String displayedday = "", displayedmonth = "", displayeddayofmonth = "";
-    private Thread mythread, mythread2;
-    private int CODE_WRITE_SETTINGS_PERMISSION = 1338;
+    private Thread mythread2;
     private boolean tutorial = false;
     private TextView reload,confirm,addone,addtwo,addthree;
 
@@ -58,14 +56,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        twodots = findViewById(R.id.twodots);
+        TextView twodots = findViewById(R.id.twodots);
         minutesdisplay = findViewById(R.id.minutesdisplay);
         hoursdisplay = findViewById(R.id.hoursdisplay);
         date = findViewById(R.id.date);
         blackscreen = findViewById(R.id.blackscreen);
         /*display = findViewById(R.id.display);*/
-        Typeface coolfont = Typeface.createFromAsset(getAssets(),"fonts/montserrat/" + "Montserrat-Thin.ttf");
-        Typeface coolfont2 = Typeface.createFromAsset(getAssets(),"fonts/montserrat/" + "Montserrat-Light.ttf");
+        Typeface coolfont = Typeface.createFromAsset(getAssets(),getResources().getString(R.string.font1));
+        Typeface coolfont2 = Typeface.createFromAsset(getAssets(),getResources().getString(R.string.font2));
         hoursdisplay.setTypeface(coolfont);
         minutesdisplay.setTypeface(coolfont);
         twodots.setTypeface(coolfont);
@@ -75,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
 
         sql();
         SQLSharing.mycursor.moveToFirst();
-        if(SQLSharing.mycursor.getString(1).equals("no"))
+        if(SQLSharing.mycursor.getString(1).equals(getResources().getString(R.string.no)))
             tutorial = true;
         close_sql();
 
 
         if(tutorial){
-            Typeface font2 = Typeface.createFromAsset(getAssets(), "Tajawal-Medium.ttf");
+            Typeface font2 = Typeface.createFromAsset(getAssets(), getResources().getString(R.string.font3));
             Button doitagain = findViewById(R.id.doitagain);
             Button backtotutorial = findViewById(R.id.backtotutorial);
             doitagain.setTypeface(font2);
@@ -96,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
             addtwo.setBackground(resources.getDrawable(R.drawable.addtwo));
             addthree.setBackground(resources.getDrawable(R.drawable.addthree));
             confirm.setBackground(resources.getDrawable(R.drawable.confirm));
-            addone.setText("Add 1" + '\n' + "minute");
-            addtwo.setText("Add 2" + '\n' + "minutes");
-            addthree.setText("Add 3" + '\n' + "minutes");
-            confirm.setText("Confirm" + '\n' + "Number");
-            reload.setText("Reset");
+            addone.setText(getResources().getString(R.string.add1));
+            addtwo.setText(getResources().getString(R.string.add2));
+            addthree.setText(getResources().getString(R.string.add3));
+            confirm.setText(getResources().getString(R.string.confirmos));
+            reload.setText(getResources().getString(R.string.res));
         }
 
         // background service
@@ -216,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
             else
                 startActivityForResult(new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).setData(Uri.parse("package:"+getPackageName()) ),0);
         } else {
+            int CODE_WRITE_SETTINGS_PERMISSION = 1338;
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_SETTINGS) == PackageManager.PERMISSION_GRANTED)
                 setBrightness(0);
             else
@@ -241,11 +240,11 @@ public class MainActivity extends AppCompatActivity {
         if(tutorial) {
             if(tutorialexit!=null)
                 tutorialexit.setVisibility(View.GONE);
-            addone.setText("Add 1" + '\n' + "minute");
-            addtwo.setText("Add 2" + '\n' + "minutes");
-            addthree.setText("Add 3" + '\n' + "minutes");
-            confirm.setText("Confirm" + '\n' + "Number");
-            reload.setText("Reset");
+            addone.setText(getResources().getString(R.string.add1));
+            addtwo.setText(getResources().getString(R.string.add2));
+            addthree.setText(getResources().getString(R.string.add3));
+            confirm.setText(getResources().getString(R.string.confirmos));
+            reload.setText(getResources().getString(R.string.res));
         }
 
         magicbeingdone = false;
@@ -273,13 +272,15 @@ public class MainActivity extends AppCompatActivity {
         displayedminutes = minutes;
         displayedhours = hours;
 
+        String g = getResources().getString(R.string.zeraw) + String.valueOf(displayedminutes);
         if(displayedminutes<10)
-            minutesdisplay.setText("0" + String.valueOf(displayedminutes));
+            minutesdisplay.setText(g);
         else
             minutesdisplay.setText(String.valueOf(displayedminutes));
 
+        g = getResources().getString(R.string.zeraw) + String.valueOf(displayedhours);
         if(hours==0)
-            hoursdisplay.setText("0" + String.valueOf(displayedhours));
+            hoursdisplay.setText(g);
         else
             hoursdisplay.setText(String.valueOf(displayedhours));
 
@@ -319,8 +320,7 @@ public class MainActivity extends AppCompatActivity {
             synchronized (this) {
                 try {
                     wait(futuretime - System.currentTimeMillis());
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) {}
             }
         }
     }
@@ -383,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
             vibrate(longvibrate*5);
             counter = 0;
             if(tutorial) {
-                print2("You have passed 10 minutes! clock has been reset to current time");
+                print2(getString(R.string.passedten));
             }
             /*display.setText(String.valueOf(counter));*/
         }
@@ -424,11 +424,11 @@ public class MainActivity extends AppCompatActivity {
         if(!doubletapmode){ doubletapmode = true;
             vibrate(longvibrate);
             if(tutorial){
-                addone.setText("Double tap" + '\n' + "anywhere");
-                reload.setText("Don't double tap here!");
-                addtwo.setText("Double tap anywhere");
-                addthree.setText("Double tap" + '\n' + "anywhere");
-                confirm.setText("Double tap" + '\n' + "anywhere");
+                addone.setText(getResources().getString(R.string.doubletap));
+                reload.setText(getResources().getString(R.string.donttt));
+                addtwo.setText(getResources().getString(R.string.yesdo));
+                addthree.setText(getResources().getString(R.string.doubletap));
+                confirm.setText(getResources().getString(R.string.doubletap));
             }
         }
         exiter();
@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
     public void reloadClicked(View view) {
         reload();
         if(tutorial){
-            print("Clock has been reset to current time");
+            print(getResources().getString(R.string.clockreset));
         }
         vibrate(longvibrate);
     }
@@ -496,13 +496,15 @@ public class MainActivity extends AppCompatActivity {
             displayedminutes = 59 + displayedminutes;
         }
         if(counter>=0) {
+            String g = getResources().getString(R.string.zeraw) + String.valueOf(displayedminutes);
             if(displayedminutes<10)
-                minutesdisplay.setText("0" + String.valueOf(displayedminutes));
-            else if(displayedminutes>=10)
+                minutesdisplay.setText(g);
+            else
                 minutesdisplay.setText(String.valueOf(displayedminutes));
 
+            g = getResources().getString(R.string.zeraw) + String.valueOf(displayedhours);
             if(hours==0)
-                hoursdisplay.setText("0" + String.valueOf(displayedhours));
+                hoursdisplay.setText(g);
             else
                 hoursdisplay.setText(String.valueOf(displayedhours));
 
@@ -510,35 +512,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
+        public boolean handleMessage(Message msg) {
             magicbeingdone = true; // i put it here so it starts working at the very last moment
             the_good_work();
+            return true;
         }
-    };
-    private Handler vibrator = new Handler(){
+    });
+    private Handler vibrator = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
+        public boolean handleMessage(Message msg) {
             vibrate(300);
+            return true;
         }
-    };
+    });
 
     private boolean oncelol = true;
-    private Handler updatetimehandler = new Handler(){
+    private Handler updatetimehandler = new Handler(new Handler.Callback() {
         @Override
-        public void handleMessage(Message msg) {
+        public boolean handleMessage(Message msg) {
             if(tutorial){
                 if(oncelol)
                     oncelol = false;
                 else
-                    print2("Time is into a new minute! it is advised to do the trick now!");
+                    print2(getResources().getString(R.string.newmin));
             }
             update_time();
+            return true;
         }
-    };
+    });
 
-    private int delayer = 1350;
+    private int delayer = 2000;
     private void dramatic_effect() {
         if(first){
             first = false;
@@ -547,7 +552,7 @@ public class MainActivity extends AppCompatActivity {
             second = false;
             delayer = 850;
         } else
-            delayer = 630;
+            delayer = 550;
     }
 
     private LinearLayout tutorialexit;
@@ -583,13 +588,15 @@ public class MainActivity extends AppCompatActivity {
         if(counter>=0) {
             counter -= 1;
             dramatic_effect();
+            String g = getResources().getString(R.string.zeraw) + String.valueOf(displayedminutes);
             if(displayedminutes<10)
-                minutesdisplay.setText("0" + String.valueOf(displayedminutes));
+                minutesdisplay.setText(g);
             else
                 minutesdisplay.setText(String.valueOf(displayedminutes));
 
+            g = getResources().getString(R.string.zeraw) + String.valueOf(displayedhours);
             if(hours==0)
-                hoursdisplay.setText("0" + String.valueOf(displayedhours));
+                hoursdisplay.setText(g);
             else
                 hoursdisplay.setText(String.valueOf(displayedhours));
 
@@ -598,17 +605,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             magicbeingdone = false;
             if(tutorial) {
-                print("Done!");
+                print(getResources().getString(R.string.done));
                 tutorialexit = findViewById(R.id.tutorialexit);
                 tutorialexit.setVisibility(View.VISIBLE);
             }
             counter = 0;
         }
     }
-
-    // TODO: live time updates, don't update UI if a boolean says trick is being done
-    // TODO: just copy onresume
-    // TODO: state variable is only set when we boutta remove the black background
 
     private void print(Object lol){
         Toast.makeText(getApplicationContext(), String.valueOf(lol), Toast.LENGTH_SHORT).show();
@@ -667,7 +670,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        mythread = new Thread(r);
+        Thread mythread = new Thread(r);
         mythread.start();
 
     }

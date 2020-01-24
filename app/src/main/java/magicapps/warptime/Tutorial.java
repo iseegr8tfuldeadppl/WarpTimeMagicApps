@@ -15,13 +15,16 @@ import magicapps.warptime.SQLite.SQLSharing;
 public class Tutorial extends AppCompatActivity {
 
     @Override
+    public void onBackPressed() {}
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
         TextView title = findViewById(R.id.title);
-        Typeface font = Typeface.createFromAsset(getAssets(), "Tajawal-Light.ttf");
-        Typeface font2 = Typeface.createFromAsset(getAssets(), "Tajawal-Medium.ttf");
+        Typeface font = Typeface.createFromAsset(getAssets(), getResources().getString(R.string.fonter));
+        Typeface font2 = Typeface.createFromAsset(getAssets(), getResources().getString(R.string.anothafont));
         title.setTypeface(font);
         TextView ft = findViewById(R.id.firsttitle);
         TextView fs = findViewById(R.id.firstsub);
@@ -70,12 +73,12 @@ public class Tutorial extends AppCompatActivity {
 
         sql();
         if(SQLSharing.mycursor.getCount()<=0){
-            SQLSharing.mydb.insertData("no");
+            SQLSharing.mydb.insertData(getResources().getString(R.string.no));
             close_sql();
         } else {
             SQLSharing.mycursor.moveToFirst();
             String SKIP = SQLSharing.mycursor.getString(1);
-            if(SKIP.equals("yes"))
+            if(SKIP.equals(getResources().getString(R.string.yas)))
                 get_out();
             else
                 close_sql();
