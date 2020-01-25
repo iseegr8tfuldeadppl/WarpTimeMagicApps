@@ -23,7 +23,7 @@
     <string name="yes">Yes!</string>
     <string name="imgood">No I\'m Good</string>
     <string name="maintitle">Warp Time</string>
-    <string name="explain">This will cause the tutorial page to hide forever and it can only be shown again by reinstalling the app or clearing its data</string>
+    <string name="explain">This means brightness will be lowered for the black screen to be less visible, it will also cause the tutorial page to hide forever and it can only be shown again by reinstalling the app or clearing its data</string>
     <string name="yesser">Yes</string>
     <string name="nogoback">No Go Back!</string>
     <string name="yousure">Are you sure?</string>
@@ -54,4 +54,8 @@
     <string name="fonter">Tajawal-Light.ttf</string>
     <string name="anothafont">Tajawal-Medium.ttf</string>
     <string name="yas">yes</string>
+    <string name="gggg">Try Again With Brightness Effect</string>
+    <string name="nomoretutorial">No More Tutorial</string>
+    <string name="importanttitle">Important!</string>
+    <string name="importanttext">After the trick is finished, to go back to the black screen from the fake clock you must either click your phone\'s back button or exit the app and join it again (you don\'t have to completely close it), you can also just turn the screen off and back on and it will go back to the black screen to do the trick again!</string>
 </resources>

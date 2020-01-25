@@ -193,6 +193,25 @@
             android:paddingEnd="@dimen/sidesofparagraphs"
             android:textSize="@dimen/paragraphtextsize"/>
         <TextView
+            android:id="@+id/importanttitle"
+            android:text="@string/importanttitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/titlesize"
+            android:paddingTop="@dimen/betweenthistextandthenexttiel"
+            android:paddingStart="@dimen/sides"
+            android:paddingEnd="@dimen/sides"
+            android:paddingBottom="@dimen/betweentitleandtext"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/importanttext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/importanttext"
+            android:paddingStart="@dimen/sidesofparagraphs"
+            android:paddingEnd="@dimen/sidesofparagraphs"
+            android:textSize="@dimen/paragraphtextsize"/>
+        <TextView
             android:id="@+id/tentitle"
             android:text="@string/seventhtitle"
             android:layout_width="match_parent"

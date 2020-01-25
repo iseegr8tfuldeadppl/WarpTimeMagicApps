@@ -28,6 +28,7 @@ import java.util.GregorianCalendar;
 import magicapps.warptime.SQLite.SQL;
 import magicapps.warptime.SQLite.SQLSharing;
 import magicapps.warptime.background.ProcessMainClass;
+import magicapps.warptime.background.Service;
 import magicapps.warptime.background.restarter.RestartServiceBroadcastReceiver;
 
 public class MainActivity extends AppCompatActivity {
@@ -82,8 +83,10 @@ public class MainActivity extends AppCompatActivity {
             Typeface font2 = Typeface.createFromAsset(getAssets(), getResources().getString(R.string.font3));
             Button doitagain = findViewById(R.id.doitagain);
             Button backtotutorial = findViewById(R.id.backtotutorial);
+            Button imdone = findViewById(R.id.imdone);
             doitagain.setTypeface(font2);
             backtotutorial.setTypeface(font2);
+            imdone.setTypeface(font2);
             addthree = findViewById(R.id.addthree);
             addtwo = findViewById(R.id.addtwo);
             addone = findViewById(R.id.addone);
@@ -150,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
             setBrightness(255);
         else
             setBrightness(curBrightnessValue);
+
+        Intent serviceIntent = new Intent(this, Service.class);
+        this.stopService(serviceIntent);
     }
 
     private void setBrightness(int level) {
@@ -685,5 +691,10 @@ public class MainActivity extends AppCompatActivity {
     public void backtotutorialpageClicked(View view) {
         backtotutorialpage();
         tutorialexit.setVisibility(View.GONE);
+    }
+
+    public void imdoneClicked(View view) {
+        confirmdialog dialog = new confirmdialog(this);
+        dialog.show();
     }
 }

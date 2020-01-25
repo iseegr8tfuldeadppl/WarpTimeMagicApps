@@ -32,17 +32,21 @@ public class Service extends android.app.Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            restartForeground();
+        }
         mCurrentService = this;
         newerminute = Integer.valueOf(String.valueOf(new Date()).split(" ")[3].split(":")[1]);
         olderminute = newerminute;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            restartForeground();
-        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            restartForeground();
+        }
 
         if (intent == null) {
             ProcessMainClass bck = new ProcessMainClass();
@@ -50,10 +54,6 @@ public class Service extends android.app.Service {
         }
 
         newerminute = Integer.valueOf(String.valueOf(new Date()).split(" ")[3].split(":")[1]);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            restartForeground();
-        }
-
         startTimer();
 
         return START_STICKY;
@@ -66,13 +66,13 @@ public class Service extends android.app.Service {
     }
 
     public void restartForeground() {
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
-                    //Notification notification = new Notification();
-                    //startForeground(NOTIFICATION_ID, notification.setNotification(this, "pls keep me here", "rawr", R.drawable.ic_launcher_background));
+                    Notification notification = new Notification();
+                    startForeground(NOTIFICATION_ID, notification.setNotification(this, "This vibrates your phone every minute when app is open", "It is recommended to do the trick when a new minute starts", R.drawable.ic_launcher_background));
                     startTimer();
             } catch (Exception ignored) {}
-        /*}*/
+        }
     }
 
     @Override

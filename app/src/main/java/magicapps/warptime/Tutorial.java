@@ -46,9 +46,13 @@ public class Tutorial extends AppCompatActivity {
         TextView ns = findViewById(R.id.ninesub);
         TextView tnt = findViewById(R.id.tentitle);
         TextView tns = findViewById(R.id.tensub);
+        TextView tntf = findViewById(R.id.importanttitle);
+        TextView tnsff = findViewById(R.id.importanttext);
         Button yes = findViewById(R.id.yes);
         Button no = findViewById(R.id.no);
         ft.setTypeface(font2);
+        tntf.setTypeface(font2);
+        tnsff.setTypeface(font2);
         fs.setTypeface(font2);
         st.setTypeface(font2);
         ss.setTypeface(font2);

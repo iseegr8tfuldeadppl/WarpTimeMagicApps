@@ -99,6 +99,19 @@
                 android:text="@string/do_it_again"
                 android:textColor="@color/black"/>
             <Button
+                android:id="@+id/imdone"
+                android:textAllCaps="false"
+                android:background="@drawable/outer"
+                android:onClick="imdoneClicked"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textSize="20sp"
+                android:text="@string/nomoretutorial"
+                android:layout_marginBottom="25dp"
+                android:textColor="@color/black"/>
+            <Button
                 android:id="@+id/backtotutorial"
                 android:textAllCaps="false"
                 android:background="@drawable/outer"
