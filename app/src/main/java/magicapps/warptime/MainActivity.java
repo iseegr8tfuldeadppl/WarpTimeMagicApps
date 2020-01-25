@@ -605,11 +605,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             magicbeingdone = false;
             if(tutorial) {
-                print(getResources().getString(R.string.done));
                 tutorialexit = findViewById(R.id.tutorialexit);
                 tutorialexit.setVisibility(View.VISIBLE);
             }
             counter = 0;
+            running = true;
+            live_updates();
         }
     }
 
@@ -652,6 +653,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void starttheshit() {
 
+        running = false;
 
         Runnable r=new Runnable() {
             @Override
